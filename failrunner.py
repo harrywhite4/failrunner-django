@@ -16,7 +16,7 @@ class TestRunner:
     errored = []
     failed = []
 
-    log_url = 'https://api.travis-ci.org/v3/job/{job}/log.txt'
+    log_url = 'https://api.travis-ci.{urlsuffix}/v3/job/{job}/log.txt'
     line_regex = r'^(ERROR|FAIL): (.*?) \((.*?)\)'
 
     def __init__(self, manage_path, pipenv, fail_only, error_only, debug, dry):
@@ -27,18 +27,10 @@ class TestRunner:
         self.debug = debug
         self.dry = dry
 
-    def get_tests(self, url):
-        url_parts = parse.urlparse(url)
-        paths = url_parts.path.split('/')
-        paths_length = len(paths)
-        if paths[paths_length - 2] == 'jobs':
-            job_num = paths[paths_length - 1]
-        else:
-            print('Invalid url')
-            return False
-
+    def get_tests(self, job_num, url_suffix):
         rawlog_url = self.log_url.format(
-            job=job_num
+            job=job_num,
+            urlsuffix=url_suffix
         )
 
         line_regex = re.compile(self.line_regex)
@@ -85,7 +77,7 @@ class TestRunner:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Run failed travis tests')
-    parser.add_argument('-u', '--url', metavar='U', type=str, nargs=1, help='Url of travis build')
+    parser.add_argument('-j', '--job', metavar='J', type=int, nargs=1, help='Travis job number')
     parser.add_argument('-p', '--path', metavar='C', type=str, nargs=1,
                         help='Path to manage.py', default=path.abspath(path.dirname(__file__)))
     parser.add_argument('-e', '--pipenv', action='store_true')
@@ -93,7 +85,10 @@ if __name__ == '__main__':
     parser.add_argument('--error-only', action='store_true')
     parser.add_argument('--debug', action='store_true')
     parser.add_argument('--dry', action='store_true')
+    parser.add_argument('--org', action='store_true', help='Use travis-ci.org')
+    parser.add_argument('--com', action='store_true', help='Use travis-ci.com')
     args = parser.parse_args()
+
     runner = TestRunner(
         args.path,
         args.pipenv,
@@ -102,7 +97,12 @@ if __name__ == '__main__':
         args.debug,
         args.dry
     )
-    loaded = runner.get_tests(args.url[0])
+
+    urltype = 'org'
+    if args.com:
+        urltype = 'com'
+
+    loaded = runner.get_tests(args.job[0], urltype)
     if not loaded:
         exit(1)
     runner.run_tests()
