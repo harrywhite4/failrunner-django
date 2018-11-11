@@ -1,10 +1,12 @@
 import argparse
-import os.path as path
+from os import path, environ
+from sys import argv
 
 from failrunner.runner import TestRunner
 
 
 def main():
+    default_args_env = 'FAILRUNNER_DEFAULT_ARGS'
     parser = argparse.ArgumentParser('Run failed travis tests')
     parser.add_argument('-j', '--job', metavar='J', type=int, nargs=1, help='Travis job number')
     parser.add_argument('-p', '--path', metavar='C', type=str, nargs=1,
@@ -14,7 +16,11 @@ def main():
     parser.add_argument('--error-only', action='store_true', help='Run only errored tests')
     parser.add_argument('--dry', action='store_true', help='Print command to be run, but don\'t run it')
     parser.add_argument('--org', action='store_true', help='Use travis-ci.org instead of travis-ci.com')
-    args = parser.parse_args()
+
+    args_list = argv[1:]
+    if default_args_env in environ:
+        args_list += environ.get(default_args_env).split(' ')
+    args = parser.parse_args(args_list)
 
     runner = TestRunner(
         args.path,
