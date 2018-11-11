@@ -10,7 +10,7 @@ setup(
     author='Harry White',
     url='https://github.com/harrywhite4/failrunner-django',
     entry_points={
-        'console_scripts': ['failrunner=failrunner.runner:main'],
+        'console_scripts': ['failrunner=failrunner.cli:main'],
     },
     install_requires=[
         'requests'
