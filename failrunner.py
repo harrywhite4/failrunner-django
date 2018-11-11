@@ -7,7 +7,7 @@ import argparse
 from urllib import parse
 import re
 import subprocess
-import os
+import os.path as path
 
 import requests
 
@@ -19,12 +19,13 @@ class TestRunner:
     log_url = 'https://api.travis-ci.org/v3/job/{job}/log.txt'
     line_regex = r'^(ERROR|FAIL): (.*?) \((.*?)\)'
 
-    def __init__(self, manage_path, pipenv, fail_only, error_only, debug):
+    def __init__(self, manage_path, pipenv, fail_only, error_only, debug, dry):
         self.pipenv = pipenv
         self.manage_path = manage_path
         self.failed_only = fail_only
         self.errored_only = error_only
         self.debug = debug
+        self.dry = dry
 
     def get_tests(self, url):
         url_parts = parse.urlparse(url)
@@ -65,10 +66,11 @@ class TestRunner:
         if self.pipenv:
             command = ['pipenv', 'run'] + command
 
-        if self.debug:
+        if self.debug or self.dry:
             print(command)
 
-        subprocess.run(command)
+        if not self.dry:
+            subprocess.run(command)
 
     @property
     def tests_to_run(self):
@@ -85,13 +87,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser('Run failed travis tests')
     parser.add_argument('-u', '--url', metavar='U', type=str, nargs=1, help='Url of travis build')
     parser.add_argument('-p', '--path', metavar='C', type=str, nargs=1,
-                        help='Path to manage.py', default=os.path.dirname(__file__))
+                        help='Path to manage.py', default=path.abspath(path.dirname(__file__)))
     parser.add_argument('-e', '--pipenv', action='store_true')
     parser.add_argument('--fail-only', action='store_true')
     parser.add_argument('--error-only', action='store_true')
     parser.add_argument('--debug', action='store_true')
+    parser.add_argument('--dry', action='store_true')
     args = parser.parse_args()
-    runner = TestRunner(args.path[0], args.pipenv, args.fail_only, args.error_only, args.debug)
+    runner = TestRunner(
+        args.path,
+        args.pipenv,
+        args.fail_only,
+        args.error_only,
+        args.debug,
+        args.dry
+    )
     loaded = runner.get_tests(args.url[0])
     if not loaded:
         exit(1)
