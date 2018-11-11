@@ -1,10 +1,4 @@
-"""
-Run failed django tests from a travis job url
-Currently needs to be run from same directory as manage.py
-"""
-
 import argparse
-from urllib import parse
 import re
 import subprocess
 import os.path as path
@@ -74,7 +68,7 @@ class TestRunner:
         return self.failed + self.errored
 
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser('Run failed travis tests')
     parser.add_argument('-j', '--job', metavar='J', type=int, nargs=1, help='Travis job number')
     parser.add_argument('-p', '--path', metavar='C', type=str, nargs=1,
@@ -103,3 +97,7 @@ if __name__ == '__main__':
     if not loaded:
         exit(1)
     runner.run_tests()
+
+
+if __name__ == '__main__':
+    main()
