@@ -19,12 +19,11 @@ class TestRunner:
     log_url = 'https://api.travis-ci.{urlsuffix}/v3/job/{job}/log.txt'
     line_regex = r'^(ERROR|FAIL): (.*?) \((.*?)\)'
 
-    def __init__(self, manage_path, pipenv, fail_only, error_only, debug, dry):
+    def __init__(self, manage_path, pipenv, fail_only, error_only, dry):
         self.pipenv = pipenv
         self.manage_path = manage_path
         self.failed_only = fail_only
         self.errored_only = error_only
-        self.debug = debug
         self.dry = dry
 
     def get_tests(self, job_num, url_suffix):
@@ -49,8 +48,9 @@ class TestRunner:
                         self.errored.append(full_test)
                     else:
                         self.failed.append(full_test)
+            return True
 
-        return True
+        return False
 
     def run_tests(self):
         tests = self.tests_to_run
@@ -58,10 +58,9 @@ class TestRunner:
         if self.pipenv:
             command = ['pipenv', 'run'] + command
 
-        if self.debug or self.dry:
+        if self.dry:
             print(command)
-
-        if not self.dry:
+        else:
             subprocess.run(command)
 
     @property
@@ -83,8 +82,7 @@ if __name__ == '__main__':
     parser.add_argument('-e', '--pipenv', action='store_true')
     parser.add_argument('--fail-only', action='store_true')
     parser.add_argument('--error-only', action='store_true')
-    parser.add_argument('--debug', action='store_true')
-    parser.add_argument('--dry', action='store_true')
+    parser.add_argument('--dry', action='store_true', help='Print command to be run, but don\'t run it')
     parser.add_argument('--org', action='store_true', help='Use travis-ci.org')
     parser.add_argument('--com', action='store_true', help='Use travis-ci.com')
     args = parser.parse_args()
@@ -94,7 +92,6 @@ if __name__ == '__main__':
         args.pipenv,
         args.fail_only,
         args.error_only,
-        args.debug,
         args.dry
     )
 
