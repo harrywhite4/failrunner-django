@@ -5,8 +5,6 @@ import requests
 
 
 class TestRunner:
-    errored = []
-    failed = []
 
     log_url = 'https://api.travis-ci.{urlsuffix}/v3/job/{job}/log.txt'
     line_regex = r'^(ERROR|FAIL): (.*?) \((.*?)\)'
@@ -17,6 +15,9 @@ class TestRunner:
         self.failed_only = fail_only
         self.errored_only = error_only
         self.dry = dry
+
+        self.errored = []
+        self.failed = []
 
     def get_tests(self, job_num, url_suffix):
         rawlog_url = self.log_url.format(
