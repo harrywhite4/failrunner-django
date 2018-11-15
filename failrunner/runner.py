@@ -9,17 +9,18 @@ class TestRunner:
     log_url = 'https://api.travis-ci.{urlsuffix}/v3/job/{job}/log.txt'
     line_regex = r'^(ERROR|FAIL): (.*?) \((.*?)\)'
 
-    def __init__(self, manage_path, pipenv, fail_only, error_only, dry):
+    def __init__(self, manage_path: str, pipenv: bool,
+                 fail_only: bool, error_only: bool, dry: bool):
         self.pipenv = pipenv
         self.manage_path = manage_path
         self.failed_only = fail_only
         self.errored_only = error_only
         self.dry = dry
 
-        self.errored = []
-        self.failed = []
+        self.errored: list = []
+        self.failed: list = []
 
-    def get_tests(self, job_num, url_suffix):
+    def get_tests(self, job_num: int, url_suffix: str) -> bool:
         rawlog_url = self.log_url.format(
             job=job_num,
             urlsuffix=url_suffix
@@ -45,7 +46,7 @@ class TestRunner:
 
         return False
 
-    def run_tests(self):
+    def run_tests(self) -> None:
         tests = self.tests_to_run
         command = ['python', 'manage.py', 'test'] + tests
         if self.pipenv:
@@ -57,7 +58,7 @@ class TestRunner:
             subprocess.run(command)
 
     @property
-    def tests_to_run(self):
+    def tests_to_run(self) -> list:
         if self.failed_only:
             return self.failed
 

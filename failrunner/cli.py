@@ -5,7 +5,7 @@ from sys import argv
 from failrunner.runner import TestRunner
 
 
-def main():
+def main() -> None:
     default_args_env = 'FAILRUNNER_DEFAULT_ARGS'
     parser = argparse.ArgumentParser('Run failed travis tests')
     parser.add_argument('-j', '--job', metavar='J', type=int, nargs=1, help='Travis job number')
@@ -19,7 +19,7 @@ def main():
 
     args_list = argv[1:]
     if default_args_env in environ:
-        args_list += environ.get(default_args_env).split(' ')
+        args_list += environ.get(default_args_env, '').split(' ')
     args = parser.parse_args(args_list)
 
     runner = TestRunner(
