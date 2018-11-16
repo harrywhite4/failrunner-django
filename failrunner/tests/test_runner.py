@@ -101,3 +101,22 @@ class RunnerTestCase(TestCase):
             ['fake_module.other_test_file.test1',
              'fake_module.other_test_file.test2']
         )
+
+    @patch('subprocess.run')
+    def test_tests_passed_to_run_no_pipenv(self, runpatch):
+        self.set_fake_tests()
+
+        self.runner.run_tests()
+        expected = ['python', 'manage.py', 'test',
+                    'fake.failed.test', 'fake.errored.test']
+        runpatch.assert_called_once_with(expected)
+
+    @patch('subprocess.run')
+    def test_tests_passed_to_run_with_pipenv(self, runpatch):
+        self.runner.pipenv = True
+        self.set_fake_tests()
+
+        self.runner.run_tests()
+        expected = ['pipenv', 'run', 'python', 'manage.py', 'test',
+                    'fake.failed.test', 'fake.errored.test']
+        runpatch.assert_called_once_with(expected)
