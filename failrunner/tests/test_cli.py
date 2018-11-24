@@ -1,9 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch
-from os import path
+import os
 
 from failrunner.cli import main
-from failrunner.cli import __file__ as clifile
 
 
 @patch('failrunner.cli.TestRunner')
@@ -19,7 +18,7 @@ class CliTestCase(TestCase):
         )
 
         mockrunner.assert_called_once_with(
-            path.abspath(path.dirname(clifile)),
+            os.getcwd(),
             True,
             False,
             True,
@@ -30,11 +29,11 @@ class CliTestCase(TestCase):
     def test_default_args_env(self, mockrunner):
 
         environ = {'FAILRUNNER_DEFAULT_ARGS': '--pipenv --org'}
-        with patch('failrunner.cli.environ', environ):
+        with patch('failrunner.cli.os.environ', environ):
             self.call_with_args(['failrunner', '-j', '40'])
 
         mockrunner.assert_called_once_with(
-            path.abspath(path.dirname(clifile)),
+            os.getcwd(),
             True,
             False,
             False,

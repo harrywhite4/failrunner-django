@@ -14,7 +14,7 @@ class RunnerTestCase(TestCase):
 
     def setUp(self):
         self.runner = TestRunner(
-            '/path/to/manage.py',
+            '/path/to/manage',
             False,
             False,
             False,
@@ -109,7 +109,7 @@ class RunnerTestCase(TestCase):
         self.runner.run_tests()
         expected = ['python', 'manage.py', 'test',
                     'fake.failed.test', 'fake.errored.test']
-        runpatch.assert_called_once_with(expected)
+        runpatch.assert_called_once_with(expected, cwd='/path/to/manage')
 
     @patch('subprocess.run')
     def test_tests_passed_to_run_with_pipenv(self, runpatch):
@@ -119,4 +119,14 @@ class RunnerTestCase(TestCase):
         self.runner.run_tests()
         expected = ['pipenv', 'run', 'python', 'manage.py', 'test',
                     'fake.failed.test', 'fake.errored.test']
-        runpatch.assert_called_once_with(expected)
+        runpatch.assert_called_once_with(expected, cwd='/path/to/manage')
+
+    @patch('subprocess.run')
+    def test_tests_run_with_manage_path(self, runpatch):
+        self.runner.manage_path = '/new/manage/path'
+        self.set_fake_tests()
+
+        self.runner.run_tests()
+        expected = ['python', 'manage.py', 'test',
+                    'fake.failed.test', 'fake.errored.test']
+        runpatch.assert_called_once_with(expected, cwd='/new/manage/path')
