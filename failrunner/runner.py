@@ -45,6 +45,7 @@ class TestRunner:
                         self.failed.append(full_test)
             return True
 
+        print('Request for {} failed :('.format(rawlog_url))
         return False
 
     def run_tests(self) -> None:
