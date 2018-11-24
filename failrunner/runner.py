@@ -1,3 +1,4 @@
+import os
 import re
 import subprocess
 
@@ -55,7 +56,7 @@ class TestRunner:
         if self.dry:
             print(command)
         else:
-            subprocess.run(command)
+            subprocess.run(command, cwd=self.manage_path)
 
     @property
     def tests_to_run(self) -> list:

@@ -23,7 +23,7 @@ def main() -> None:
     args = parser.parse_args(args_list)
 
     runner = TestRunner(
-        args.path,
+        args.path[0],
         args.pipenv,
         args.fail_only,
         args.error_only,
