@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/harrywhite4/failrunner-django.svg?branch=master)](https://travis-ci.com/harrywhite4/failrunner-django)
+
 # failrunner-django
 A command line tool to run django tests that failed during a travis job
 
