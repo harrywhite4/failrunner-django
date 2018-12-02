@@ -15,3 +15,6 @@ A command line tool to run django tests that failed during a travis job
 - To run a job on travis-ci.org `failrunner -j jobnumber --org`
 - To specify manage.py path `failrunner -j jobmnumber -p /path/to/manage/`
 - For all cli options `failrunner --help`
+
+# Contributing
+Contributions welcome. Use `python -m unittest` to run tests.
