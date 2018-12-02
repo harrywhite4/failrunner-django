@@ -1,6 +1,13 @@
 language: python
 python: 3.6
 install:
-    - pip install requests
+- pip install requests
 script:
-    - python -m unittest
+- python -m unittest
+deploy:
+  provider: pypi
+  username: hwhite4
+  on:
+    branch: master
+  password:
+    secure: P98Q8wFQyml0c8wGND4zlQIvlMyejy1d1IZD70eIVw3VcOzwvhLRgBGGbCetojg+ZtRe8fCnHao+rZACDHB4ahMGVK4qQOcP8ShfQicDVxkmXW+4gpP1Ev9+0w6tyaPTxXlzpMt3leFQC8nEwAzmrCtSYY9GfrGAs6cgEg2S7R4z/0XZpYamA/7+PCQPjruN7tDkH9YQFrLRnw0DbDjtJUO7jLkC5giaBEtW1s3XQgD13XMXMI+2Ajao3VT+kWU0/Jqcyvf28LmFffgWN/H9sCFgU+jFd8roefpfvIsk9wBrJAsEsvbQ9VlmCmFunORRs6Z4jsDJJfsInFIr9cYV4gL+wMzIWAN5kS0HkUAshA24RJ1IkWnIjkrYtmnEBhHDp6ONGd4z+chHTwDNxJPZvetBL3j2QfngoTodOVD0Op2qM34Zrqi/afG2mgrVpl8ntqljXAal4b7JLVWv9MR784et7QbL0ywj/LzF+5tdoDYsGzF8aKNvr75EpW95gNzdqdm96tj7zKkCGEoKfdvi7I8dxT7MFsC8AR/N7G6N0DyJtuCKAtlGOUioiaFtJeFo7w/NxWcedOjZuO3BIYgPZx6FO+v39O5mreKJXsCyLtiA0NRIze94MImVsu27WFvfCQC+UpVcgZ7dw8K7bgVJGJm1WFQGRA/hWazwqdlFOwk=
