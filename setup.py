@@ -4,7 +4,7 @@ from setuptools import setup
 
 here = path.abspath(path.dirname(__file__))
 
-VERSION = '1.0.3'
+VERSION = '1.0.4'
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
