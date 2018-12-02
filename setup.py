@@ -13,6 +13,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='failrunner-django',
     version=VERSION,
+    license='MIT',
     packages=['failrunner'],
     description='A command line tool to run django tests that failed during a travis job',
     long_description=long_description,
@@ -26,5 +27,16 @@ setup(
     install_requires=[
         'requests'
     ],
-    python_requires='>=3.5'
+    python_requires='>=3.5',
+    classifiers=[
+        'License :: OSI Approved :: MIT License',
+        'Topic :: Software Development :: Testing',
+        'Intended Audience :: Developers',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ]
 )
