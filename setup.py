@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 from os import path
-from distutils.core import setup
+from setuptools import setup
 
 here = path.abspath(path.dirname(__file__))
 
-VERSION = '1.0.2'
+VERSION = '1.0.3'
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -18,6 +18,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     author='Harry White',
+    author_email='harry.white424@gmail.com',
     url='https://github.com/harrywhite4/failrunner-django',
     entry_points={
         'console_scripts': ['failrunner=failrunner.cli:main'],
