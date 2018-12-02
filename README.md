@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.com/harrywhite4/failrunner-django.svg?branch=master)](https://travis-ci.com/harrywhite4/failrunner-django)
+[![PyPI version shields.io](https://img.shields.io/pypi/v/failrunner-django.svg)](https://pypi.python.org/pypi/failrunner-django/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/failrunner-django.svg)](https://pypi.python.org/pypi/failrunner-django/)
 
 # failrunner-django
 A command line tool to run django tests that failed during a travis job
